@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt.js"
+import bcrypt from "bcrypt";
 
 const UserSchema = mongoose.Schema({
     email: {
@@ -10,7 +10,7 @@ const UserSchema = mongoose.Schema({
         match: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Please enter a valid email"]
     },
     username: {
-        tyrpe: String,
+        type: String,
         required: [true, "Please add an username"]
     },
     password: {
@@ -36,3 +36,5 @@ UserSchema.pre("save", async function (next) {
 
 export const User = mongoose.model("User", UserSchema);
 
+
+export default User;

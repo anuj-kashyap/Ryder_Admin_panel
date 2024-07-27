@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken"
+import { User } from "../model/userModel.js";
 import asyncHandler from "express-async-handler";
 const genToken = (id)=>{
-    return jwt.sign({id},process.env.JWT_KEY,{expressIn:"1d"});
+    return jwt.sign({id},process.env.JWT_KEY,{expiresIn:"1d"});
 };
 
 const registerUser = asyncHandler(async(req,res)=>{
@@ -13,17 +14,17 @@ const registerUser = asyncHandler(async(req,res)=>{
     }
 
     if(password.length<6){
-        res.Status(400);
+        res.status(400);
         throw new Error("Password must contain atleast 6 character")
     }
 
     const userExist = await User.findOne({email});
     if(userExist){
-        res.Status(400);
+        res.status(400);
         throw new Error ("User already exist")
     }
 
-    const user = await user.create({
+    const user = await User.create({
         email,
         username,
         password
@@ -32,7 +33,7 @@ const registerUser = asyncHandler(async(req,res)=>{
     const token = genToken(user._id);
     res.cookie("token",token,{
         httpOnly:true,
-        expires:new Data(Date.now() + 1000 + 86400),
+        expires:new Date(Date.now() + 1000 + 86400),
         secure:false,
         sameSite:"lax",
         path:"/"
@@ -40,7 +41,7 @@ const registerUser = asyncHandler(async(req,res)=>{
 
     if(user){
         const {username, email} = user;
-        res.Status(201).json({
+        res.status(201).json({
             username,
             email,
         });
@@ -51,4 +52,4 @@ const registerUser = asyncHandler(async(req,res)=>{
     }
 })
 
-export {registerUser}
+export {registerUser};

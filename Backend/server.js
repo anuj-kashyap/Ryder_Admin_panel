@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
+import userRoute from "./Route/userRoute.js";
 dotenv.config()
 
 
@@ -20,7 +21,7 @@ app.use(cookieSession({
 app.use(express.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-
+app.use("/api/user",userRoute)
 const PORT = process.env.PORT||5000;
 
 mongoose.connect(process.env.MONGO_URL)

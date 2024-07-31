@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import bg from '../assets/safety2.png'
+import logo from '../assets/ry-logo.png'
 import bg1 from '../assets/taxi3.png'
-import logo from '../assets/ryder.png'
+// import logo from '../assets/ryder.png'
+import { Await, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+// import { Toast } from 'react-toastify';
+
+
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,42 +16,58 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const validateForm = () => {
-    let formErrors = {};
-    if (!email) formErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(email)) formErrors.email = "Email is invalid";
-    if (!password) formErrors.password = "Password is required";
-    else if (password.length < 6) formErrors.password = "Password must be at least 6 characters";
-    setErrors(formErrors);
-    return Object.keys(formErrors).length === 0;
-  };
+
+  // const validateForm = () => {
+  //   let formErrors = {};
+  //   if (!email) formErrors.email = "Email is required";
+  //   else if (!/\S+@\S+\.\S+/.test(email)) formErrors.email = "Email is invalid";
+  //   if (!password) formErrors.password = "Password is required";
+  //   else if (password.length < 6) formErrors.password = "Password must be at least 6 characters";
+  //   setErrors(formErrors);
+  //   return Object.keys(formErrors).length === 0;
+  // };
+
+  const loginApi = async()=>{
+    console.log(`${import.meta.env.VITE_BACKEND_URL}`)
+    try{
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, {email,password},{withCredentials:true});
+
+      if(response.status=== 201){
+        console.log('Login successfull',response.data);
+        navigate('/dashboard');
+      }
+    } catch (error){
+      console.error('Login failed:',error.response?.data?.message || error.message);
+      setErrors({...errors,server: 'Invalid email or password'});
+    }finally{
+      setIsLoading(false);
+    }
+    
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      setIsLoading(true);
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setIsLoading(false);
-      // Handle login logic here
-      console.log("Login successful");
-    }
+    setIsLoading(true);
+    await loginApi();
   };
 
+  
+
   return (
-    <div className="min-h-screen flex items-center justify-center "
-      style={{backgroundImage:`url(${bg})`}}
+    <div className="min-h-screen  flex items-center justify-center bg-cover bg-center "
+      style={{backgroundImage:`url(${bg1})`}}
     >
       <motion.div 
         className="bg-white shadow-purple-600 text-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md"
-        style={{backgroundImage:`url(${bg1})`}}
+        // style={{backgroundImage:`url(${bg1})`}}
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <div className="text-center mb-8">
-          <img src={logo} alt="Admin Logo" className="mx-auto w-12 h-12 mb-4" />
+          <img src={logo} alt="Admin Logo" className="mx-auto w-auto h-24 mb-4" />
           <h2 className="text-3xl font-bold">Admin Login</h2>
         </div>
 

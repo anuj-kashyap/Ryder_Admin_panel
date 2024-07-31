@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
 import userRoute from "./Route/userRoute.js";
+import cors from "cors"
 dotenv.config()
 
 
@@ -18,8 +19,14 @@ app.use(cookieSession({
     keys:[process.env.SESSION_SECRET]
 }))
 
+
 app.use(express.urlencoded({extended:false}));
 app.use(bodyParser.json());
+
+app.use(cors({
+    origin:["http://localhost:5173"],
+    credentials:true
+}))
 
 app.use("/api/user",userRoute)
 const PORT = process.env.PORT||5000;

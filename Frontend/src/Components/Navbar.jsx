@@ -25,7 +25,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-transparent overflow-hidden ">
+    <nav className="bg-transparent overflow-x-hidden ">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
@@ -41,7 +41,7 @@ const Navbar = () => {
                     location.pathname === item.path
                       ? 'border-indigo-500 text-gray-900'
                       : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                  } inline-flex items-center px-1 pt-1 border-b-2 text-base font-medium`}
+                  } inline-flex items-center px-1 pt-1 border-b-2 text-base font-semibold font-medium`}
                 >
                   {item.name}
                 </Link>

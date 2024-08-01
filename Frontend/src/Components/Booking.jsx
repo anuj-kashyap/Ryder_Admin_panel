@@ -66,7 +66,7 @@ const Booking = () => {
   return (
     <div className="min-h-screen pt-4 bg-gray-100  bg-cover bg-center " style={{backgroundImage: `url(${bg2})`}}>
       <Navbar/>
-    <div className="  p-4 min-h-screen "  >
+    <div className=" container mx-auto p-4 min-h-screen "  >
       <h1 className=" p-4 text-3xl font-bold mb-6 text-gray-800">Bookings</h1>
       <div className="mb-6">
         <input

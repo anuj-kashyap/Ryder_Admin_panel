@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { motion } from 'framer-motion';
 import Navbar from './Navbar';
-import bg2 from '../assets/taxi3.png'
+import bg2 from '../assets/taxi3.png';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -53,61 +54,89 @@ const Earnings = () => {
     },
   };
 
+  // Define animation variants
+  const cardVariants = {
+    hover: { scale: 1.05, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' },
+    tap: { scale: 0.95 }
+  };
+
   return (
-    <div className="min-h-screen pt-4 bg-gray-100  bg-cover bg-center " style={{backgroundImage: `url(${bg2})`}}>
-    <Navbar/>
-    <div className=" p-6" >
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Earnings Dashboard</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-2 text-gray-700">Total Earnings</h2>
-          <p className="text-3xl font-bold text-green-600">${totalEarnings.toFixed(2)}</p>
-        </div>
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-2 text-gray-700">Average Daily Earnings</h2>
-          <p className="text-3xl font-bold text-blue-600">${averageEarnings.toFixed(2)}</p>
-        </div>
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-2 text-gray-700">Time Frame</h2>
-          <select 
-            value={timeFrame} 
-            onChange={(e) => setTimeFrame(e.target.value)}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+    <div className="min-h-screen pt-4 bg-gray-100 bg-cover bg-center" style={{ backgroundImage: `url(${bg2})` }}>
+      <Navbar />
+      <div className="p-6">
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">Earnings Dashboard</h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <motion.div
+            className="bg-white rounded-lg shadow-md p-6"
+            variants={cardVariants}
+            whileHover="hover"
+            whileTap="tap"
           >
-            <option value="week">Last Week</option>
-            <option value="month">Last Month</option>
-            <option value="year">Last Year</option>
-          </select>
+            <h2 className="text-xl font-semibold mb-2 text-gray-700">Total Earnings</h2>
+            <p className="text-3xl font-bold text-green-600">${totalEarnings.toFixed(2)}</p>
+          </motion.div>
+
+          <motion.div
+            className="bg-white rounded-lg shadow-md p-6"
+            variants={cardVariants}
+            whileHover="hover"
+            whileTap="tap"
+          >
+            <h2 className="text-xl font-semibold mb-2 text-gray-700">Average Daily Earnings</h2>
+            <p className="text-3xl font-bold text-blue-600">${averageEarnings.toFixed(2)}</p>
+          </motion.div>
+
+          <motion.div
+            className="bg-white rounded-lg shadow-md p-6"
+            variants={cardVariants}
+            whileHover="hover"
+            whileTap="tap"
+          >
+            <h2 className="text-xl font-semibold mb-2 text-gray-700">Time Frame</h2>
+            <select
+              value={timeFrame}
+              onChange={(e) => setTimeFrame(e.target.value)}
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+              <option value="week">Last Week</option>
+              <option value="month">Last Month</option>
+              <option value="year">Last Year</option>
+            </select>
+          </motion.div>
         </div>
-      </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <Bar data={chartData} options={options} />
-      </div>
+        <motion.div
+          className="bg-white rounded-lg shadow-md p-6"
+          variants={cardVariants}
+          whileHover="hover"
+          whileTap="tap"
+        >
+          <Bar data={chartData} options={options} />
+        </motion.div>
 
-      <div className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-700">Earnings Breakdown</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white">
-            <thead className="bg-gray-200">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Earnings</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {earningsData.map((day, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">{day.date}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">${day.amount.toFixed(2)}</td>
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-700">Earnings Breakdown</h2>
+          <div className="overflow-x-auto rounded-lg">
+            <table className="min-w-full  bg-white">
+              <thead className="bg-gray-200">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Earnings</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {earningsData.map((day, index) => (
+                  <tr key={index} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">{day.date}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">${day.amount.toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
